@@ -1,7 +1,30 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import { mockGoferScript } from 'fm-mock'
+	import FMGofer from 'fm-gofer'
   import svelteLogo from './assets/svelte.svg'
   import viteLogo from './assets/vite.svg'
   import Counter from './lib/Counter.svelte'
+
+  let loading = true
+  let fmData = ''
+
+  if (import.meta.env.DEV) {
+    mockGoferScript('WV FileMaker-SvelteWebViewer', {
+      resultFromFM: 'This text could come from a FileMakser script, but fm-mock lets you develop FileMaker webviewer apps in the browser; even if they call FileMaker scripts! So this text is a "mock" of an actual scripts response. Note that the slow "loading" time is also defined by the mocked script result, which allows you to replicate real-life scenarios where a script might take some time to return a result.',
+      logParams: true,
+      delay: 3000
+    })
+  }
+
+	onMount(async () => {
+		const res = await FMGofer.PerformScript('WV FileMaker-SvelteWebViewer', 'parameter from the webviewer')
+		loading = false
+		if (import.meta.env.DEV) {
+			console.log('FileMaker script response:', res)
+		}
+    fmData = res
+	})
 </script>
 
 <main>
@@ -19,13 +42,11 @@
     <Counter />
   </div>
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  {#if fmData}
+    <p class="fmData">{fmData}</p>
+  {:else}
+    <p>loading...</p>
+  {/if}
 </main>
 
 <style>
@@ -41,7 +62,11 @@
   .logo.svelte:hover {
     filter: drop-shadow(0 0 2em #ff3e00aa);
   }
-  .read-the-docs {
-    color: #888;
+  .fmData {
+    border-radius: 4px;
+    border: 1px solid #cfcfcf;
+    padding: 0.6em 1.2em;
+    background-color: #f9f9f9;
+    font-family: monospace;
   }
 </style>
