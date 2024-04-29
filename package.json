@@ -1,21 +1,24 @@
 {
 	"name": "filemaker-sveltewebviewer",
 	"private": true,
-	"version": "0.0.0",
+	"version": "0.0.0+5",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "npm run lint && vite build",
+		"build": "node ./scripts/increment-build.js && npm run format && vite build",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"lint": "prettier --check .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"upload": "node ./scripts/upload"
 	},
 	"devDependencies": {
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
 		"@tsconfig/svelte": "^5.0.2",
+		"@types/node": "^20.12.7",
 		"fm-gofer": "^1.8.0",
 		"fm-mock": "github:jwillinghalpern/fm-mock#7-add-mockgoferscript-export",
+		"open": "^10.1.0",
 		"prettier": "^3.2.5",
 		"prettier-plugin-svelte": "^3.2.3",
 		"svelte": "^4.2.12",
@@ -24,6 +27,7 @@
 		"typescript": "^5.2.2",
 		"vite": "^5.2.0",
 		"vite-plugin-html": "^3.2.2",
+		"vite-plugin-package-version": "^1.1.0",
 		"vite-plugin-singlefile": "^2.0.1"
 	}
 }
