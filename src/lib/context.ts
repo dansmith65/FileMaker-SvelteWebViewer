@@ -1,3 +1,5 @@
+import simpleError from "./simple-error";
+
 type Context = {
 	layoutName: string;
 	layoutNumber: number;
@@ -21,19 +23,22 @@ if (import.meta.env.DEV) {
 		scriptName: "WV: filemaker-sveltewebviewer",
 		webViewerName: "webviewer",
 		windowName: "FileMaker-SvelteWebViewer",
-		currentTimeUTCMilliseconds: Date.now() + 62135596800000
+		currentTimeUTCMilliseconds: Date.now() + 62135596800000,
 	};
 } else {
 	/**
 	 * FileMaker should add a JSON Object like with Context type to a script tag like:
 	 *     "<script id='FILEMAKER_CONTEXT' type='application/json'>" & $context & "</script>"
 	 */
-	const el = document.querySelector("#FILEMAKER_CONTEXT");
-	// TODO: how do I display this error in the webviewer itself?
-	if (!el) throw "FILEMAKER_CONTEXT not found!";
-	const text = el.textContent;
-	if (!text) throw "FILEMAKER_CONTEXT not found!";
-	context = JSON.parse(text);
+	try {
+		const el = document.querySelector("#FILEMAKER_CONTEXT");
+		if (!el) throw new Error("FILEMAKER_CONTEXT not found");
+		const text = el.textContent;
+		if (!text) throw new Error("FILEMAKER_CONTEXT was empty");
+		context = JSON.parse(text);
+	} catch (error) {
+		simpleError(error);
+	}
 }
 
 export default context;
