@@ -1,7 +1,12 @@
 {
 	"name": "filemaker-sveltewebviewer",
+	"version": "0.0.0+17",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dansmith65/FileMaker-SvelteWebViewer"
+	},
 	"private": true,
-	"version": "0.0.0+5",
+	"license": "MIT",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",

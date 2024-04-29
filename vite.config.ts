@@ -18,11 +18,15 @@ export default defineConfig({
 		svelte(),
 		viteSingleFile(),
 		createHtmlPlugin({
-			minify: false, // TODO: maybe I don't want this afterall?
+			minify: {
+				collapseWhitespace: true,
+				removeComments: false,
+			},
 		}),
 	],
 	define: {
 		"import.meta.env.PACKAGE_VERSION": JSON.stringify(pkg.version),
 		"import.meta.env.PACKAGE_NAME": JSON.stringify(pkg.name),
+		"import.meta.env.PACKAGE_REPOSITORY": JSON.stringify(pkg.repository),
 	},
 });

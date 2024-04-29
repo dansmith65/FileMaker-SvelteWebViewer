@@ -1,3 +1,17 @@
+# FileMaker-SvelteWebViewer
+
+- modify package.json  
+  These are the important values for this project because they are included in the minimized code:
+  - **name**: A unique name for your web viewer app.
+  - **version**: The build will be automatically incremeted, so you can always tell which version of the app you're using in a web viewer. Change the version as you see fit.
+  - **repository**: I would suggest saying _something_ here; even if the code isn't in a repo yet, or isn't publicly available. The point of this is to allow any developer working in FileMaker to find the source code used to create the web viewer.
+
+---
+
+Below are the original README contents for a new project
+
+---
+
 # Svelte + TS + Vite
 
 This template should help get you started developing with Svelte and TypeScript in Vite.
