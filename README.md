@@ -1,5 +1,14 @@
 # FileMaker-SvelteWebViewer
 
+This is meant to be a starting point for web viewer development with Svelte. It provides a full development environment that allows for testing in a browser and a method for deploying the code for production use.
+
+## Status
+
+This project is in a very early stage and has very little documentation; beware!
+
+## Instructions:
+
+- For every web viewer app you create: also create a script like `WV: filemaker-sveltewebviewer` to load it and receive all calls from the web viewer.
 - modify package.json  
   These are the important values for this project because they are included in the minimized code:
   - **name**: A unique name for your web viewer app.
@@ -8,7 +17,7 @@
 
 ---
 
-Below are the original README contents for a new project
+Below are the original README contents for a new project...
 
 ---
 
