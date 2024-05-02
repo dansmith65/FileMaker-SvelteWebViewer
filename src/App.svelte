@@ -1,15 +1,10 @@
 <script lang="ts">
-	import { onMount } from "svelte";
 	import { mockGoferScript } from "fm-mock";
 	import FMGofer from "fm-gofer";
 	import svelteLogo from "./assets/svelte.svg";
 	import viteLogo from "./assets/vite.svg";
 	import Counter from "./lib/Counter.svelte";
 	import context from "./lib/context.js";
-	import simpleError from "./lib/simple-error";
-
-	let loading = true;
-	let fmData = "";
 
 	if (import.meta.env.DEV) {
 		mockGoferScript(context.scriptName, {
@@ -20,29 +15,27 @@
 		});
 	}
 
-	onMount(async () => {
-		try {
-			const res = await FMGofer.PerformScript(
-				context.scriptName,
-				{
-					route: "onload",
-					context,
-					app: {
-						version: import.meta.env.PACKAGE_VERSION,
-						name: import.meta.env.PACKAGE_NAME,
-					},
+	async function getData(): Promise<string> {
+		return FMGofer.PerformScript(
+			context.scriptName,
+			{
+				route: "onload",
+				context,
+				app: {
+					version: import.meta.env.PACKAGE_VERSION,
+					name: import.meta.env.PACKAGE_NAME,
 				},
-				10000,
-			);
-			if (!res) {
-				throw new Error("FileMaker script didn't provide a valid response.");
-			}
-			fmData = res;
-			loading = false;
-		} catch (error) {
-			simpleError(error);
-		}
-	});
+			},
+			10000,
+		)
+			.then((res) => {
+				if (!res) {
+					throw new Error("FileMaker script didn't provide a valid response.");
+				}
+				// NOTE: you can pars the response as json here, if needed:
+				return res;
+			})
+	}
 </script>
 
 <main>
@@ -61,11 +54,13 @@
 		<Counter />
 	</div>
 
-	{#if loading}
+	{#await getData()}
 		<p>loading...</p>
-	{:else if fmData}
+	{:then fmData}
 		<p class="fmData">{fmData}</p>
-	{/if}
+	{:catch error}
+		<p>Error: {error}</p>
+	{/await}
 </main>
 
 <style>
