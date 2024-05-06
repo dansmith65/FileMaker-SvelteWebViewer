@@ -8,10 +8,15 @@
 
 	if (import.meta.env.DEV) {
 		mockGoferScript(context.scriptName, {
-			resultFromFM:
-				'This text could come from a FileMakser script, but fm-mock lets you develop FileMaker webviewer apps in the browser; even if they call FileMaker scripts! So this text is a "mock" of an actual scripts response. Note that the slow "loading" time is also defined by the mocked script result, which allows you to replicate real-life scenarios where a script might take some time to return a result.',
+			resultFromFM: (param) => {
+				if (param.route === "onload") {
+					return 'This text could come from a FileMakser script, but fm-mock lets you develop FileMaker webviewer apps in the browser; even if they call FileMaker scripts! So this text is a "mock" of an actual scripts response. Note that the slow "loading" time is also defined by the mocked script result, which allows you to replicate real-life scenarios where a script might take some time to return a result.';
+				} else if (param.route === "incremented") {
+					alert(`The count is now ${param.count}`);
+				}
+			},
 			logParams: true,
-			delay: 1000,
+			delay: 100,
 		});
 	}
 
@@ -27,14 +32,13 @@
 				},
 			},
 			10000,
-		)
-			.then((res) => {
-				if (!res) {
-					throw new Error("FileMaker script didn't provide a valid response.");
-				}
-				// NOTE: you can pars the response as json here, if needed:
-				return res;
-			})
+		).then((res) => {
+			if (!res) {
+				throw new Error("FileMaker script didn't provide a valid response.");
+			}
+			// NOTE: you can pars the response as json here, if needed:
+			return res;
+		});
 	}
 </script>
 
