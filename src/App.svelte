@@ -27,14 +27,13 @@
 				},
 			},
 			10000,
-		)
-			.then((res) => {
-				if (!res) {
-					throw new Error("FileMaker script didn't provide a valid response.");
-				}
-				// NOTE: you can pars the response as json here, if needed:
-				return res;
-			})
+		).then((res) => {
+			if (!res) {
+				throw new Error("FileMaker script didn't provide a valid response.");
+			}
+			// NOTE: you can pars the response as json here, if needed:
+			return res;
+		});
 	}
 </script>
 
